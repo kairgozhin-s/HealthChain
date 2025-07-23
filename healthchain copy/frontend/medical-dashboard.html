@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthchain - Medical Staff Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .patient-list {
+            margin-top: 20px;
+        }
+        
+        .patient-card {
+            background: white;
+
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .patient-details {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f8f8;
+
+            border-radius: 5px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .status-active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: #FFC107;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+
+        <img src="logo.png" alt="Healthchain Logo" class="top-logo">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Medical Staff Dashboard</h1>
+            <p style="margin-top: 10px; color: #666;">Welcome, <span id="staffName">Dr. Smith</span></p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" onclick="showPatientList()">Patient List</button>
+
+            <button class="nav-btn" onclick="showRecords()">Medical Records</button>
+        </div>
+
+        <div id="patientList" class="patient-list">
+        </div>
+    </div>
+
+    
+    <script>
+    const currentStaffId = "MS001";
+
+        async function loadPatients() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/staff/patients/${currentStaffId}`);
+                const patients = await response.json();
+                
+                const patientList = document.getElementById('patientList');
+                patientList.innerHTML = '';
+        
+                patients.forEach(patient => {
+
+                    const patientCard = document.createElement('div');
+                    patientCard.className = 'patient-card';
+                    patientCard.innerHTML = `
+
+                        <h3>Patient: ${patient.full_name}
+                            <span class="status-badge ${patient.condition_status === 'Healthy' ? 'status-active' : 'status-pending'}">
+                                ${patient.condition_status || 'Pending'}
+                            </span>
+                        </h3>
+                        <div class="patient-details">
+                            <p><strong>Last Checkup:</strong> ${patient.last_checkup ? new Date(patient.last_checkup).toLocaleDateString() : 'No visits recorded'}</p>
+                            <p><strong>Diagnosis:</strong> ${patient.diagnosis || 'Not specified'}</p>
+                            <button class="btn" onclick="viewPatientRecord('${patient.user_id}')">View Full Record</button>
+                        </div>
+                    `;
+                    patientList.appendChild(patientCard);
+                });
+            } catch (error) {
+                    console.error('Error loading patients:', error);
+            }
+        }
+        
+        async function viewPatientRecord(patientId) {
+             try {
+                const response = await fetch(`http://localhost:3000/api/staff/patient/${patientId}`);
+                const record = await response.json();
+                alert(`Viewing record for patient ${patientId}`);
+            } catch (error) {
+                console.error('Error viewing patient record:', error);
+            }
+        }
+    
+        loadPatients();
+        loadPatients();
+    </script>
+    <script src="api.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+{
+    "users": [
+        {
+            "user_id": "U001",
+            "full_name": "John Doe",
+            "wallet_address": "0x1234...",
+            "email": "john@gmail.com"
+        },
+        {
+            "user_id": "U002",
+            "full_name": "Jane Smith",
+            "wallet_address": "0x5678...",
+            "email": "jane@gmail.com"
+        }
+    ],
+    "medicalStaff": [
+        {
+            "staff_id": "MS001",
+            "full_name": "Dr. Smith",
+            "specialization": "Cardiologist",
+            "patients": ["U001", "U002"]
+        },
+        {
+            "staff_id": "MS002",
+            "full_name": "Dr. Johnson",
+            "specialization": "General Practitioner",
+            "patients": ["U001"]
+        }
+    ],
+    "healthStatus": {
+        "U001": {
+            "condition": "Healthy",
+            "last_checkup": "2024-03-01",
+            "vital_signs": {
+                "blood_pressure": "120/80",
+                "heart_rate": 72
+            }
+        },
+        "U002": {
+            "condition": "Under Treatment",
+            "last_checkup": "2024-03-03",
+            "vital_signs": {
+                "blood_pressure": "130/85",
+                "heart_rate": 78
+            }
+        }
+    },
+    "activities": {
+        "U001": [
+            {
+                "timestamp": "2024-03-05T10:30:00",
+                "description": "Connected wallet to Healthchain",
+                "type": "LOGIN"
+            },
+            {
+                "timestamp": "2024-03-05T11:00:00",
+                "description": "Completed annual checkup",
+                "type": "CHECKUP"
+            }
+        ],
+        "U002": [
+            {
+                "timestamp": "2024-03-04T09:15:00",
+                "description": "New prescription added",
+                "type": "PRESCRIPTION"
+            }
+        ]
+    }
+}
